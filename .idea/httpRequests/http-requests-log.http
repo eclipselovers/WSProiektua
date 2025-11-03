@@ -4,6 +4,16 @@ X-Auth-Token: 8a72b09d4ebc412f8bf4af31cd07e39e
 User-Agent: IntelliJ HTTP Client/WebStorm 2025.2.1
 Accept-Encoding: br, deflate, gzip, x-gzip
 
+<> /Users/arruti/Library/Application Support/JetBrains/WebStorm2025.2/scratches/premiee-1.json
+
+###
+
+GET https://api.football-data.org/v4/teams/92
+Accept: application/json
+X-Auth-Token: 8a72b09d4ebc412f8bf4af31cd07e39e
+User-Agent: IntelliJ HTTP Client/WebStorm 2025.2.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+
 <> /Users/arruti/Library/Application Support/JetBrains/WebStorm2025.2/scratches/premiee.json
 
 ###
