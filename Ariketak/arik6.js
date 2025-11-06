@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-const text = await readFile('./../.idea/httpRequests/premier.json', 'utf8');
+const text = await readFile('./../json/premier.json', 'utf8');
 const data = JSON.parse(text);
 
 
@@ -26,8 +26,6 @@ data.teams.forEach(t => {
     }
 
 )
-
-
 
 
 
