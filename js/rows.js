@@ -9,6 +9,7 @@ const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
 
 export let setupRows = function (game) {
 
+    //let [state, updateState] = initState('WAYgameState', game.solution.id)
 
     function leagueToFlag(leagueId) {
         const leagueMap = {
@@ -54,7 +55,24 @@ export let setupRows = function (game) {
 
         }
     }
-
+    function unblur(outcome) {
+        return new Promise( (resolve, reject) =>  {
+            setTimeout(() => {
+                document.getElementById("mistery").classList.remove("hue-rotate-180", "blur")
+                document.getElementById("combobox").remove()
+                let color, text
+                if (outcome=='success'){
+                    color =  "bg-blue-500"
+                    text = "Awesome"
+                } else {
+                    color =  "bg-rose-500"
+                    text = "The player was " + game.solution.name
+                }
+                document.getElementById("picbox").innerHTML += `<div class="animate-pulse fixed z-20 top-14 left-1/2 transform -translate-x-1/2 max-w-sm shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden ${color} text-white"><div class="p-4"><p class="text-sm text-center font-medium">${text}</p></div></div>`
+                resolve();
+            }, "2000")
+        })
+    }
     function setContent(guess) {
         const birthCheck = check('birthdate', guess.birthdate);
         let gezia = '';
@@ -95,19 +113,56 @@ export let setupRows = function (game) {
         let playersNode = document.getElementById('players')
         playersNode.prepend(stringToHTML(child))
     }
-
+    function resetInput(){
+        // Clear input and update placeholder with current attempt number
+        const input = document.getElementById('myInput');
+        if (!input) return;
+        input.value = '';
+        const attempt = Math.min((game?.guesses?.length || 0) + 1, 8);
+        input.placeholder = `Guess ${attempt} of 8`;
+    }
     let getPlayer = function (playerId) {
         const foundPlayer = game.players.find(player => {
             return player.id === playerId;
         });
         return foundPlayer;
     }
-
+    function gameEnded(lastGuess){
+        // Game ends if guessed correctly or after 8 attempts
+        return lastGuess === game.solution.id || (game.guesses && game.guesses.length >= 8);
+    }
+    resetInput();
+    function success(){
+        unblur('success');
+        }
+    function gameOver(){
+        unblur('failure');
+    }
     return /* addRow */ function (playerId) {
+
         let guess = getPlayer(playerId)
         console.log(guess)
 
         let content = setContent(guess)
+
+        game.guesses.push(playerId)
+        //updateState(playerId)
+
+        resetInput();
+
+        if (gameEnded(playerId)) {
+            // updateStats(game.guesses.length);
+
+            if (playerId == game.solution.id) {
+                success();
+            }
+
+            if (game.guesses.length == 8) {
+                gameOver();
+            }
+        }
+
+
         showContent(content, guess)
     }
 }
