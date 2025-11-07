@@ -1,12 +1,5 @@
-# Who Are Ya? 
+**UPV/EHUko ikasleek garatutako web bertsioko futbol jokalarien asmakizun joko ezaguna**
 
-**El popular juego de adivinanza de jugadores de fútbol en su versión web desarrollado por estudiantes de la UPV/EHU**
+## 📝 Deskribapena
 
-## 📝 Descripción
-
-Este proyecto es una implementación del juego "Who Are Ya?", donde el objetivo es adivinar un jugador de fútbol misterioso. Se desarrolla como parte de un trabajo para la asignatura de **[Web Sistemak]** utilizando principalmente tecnologías Front-End y Back-End.
-
-## 👥 Créditos
-
-* **Desarrollado por:** eclipselovers (Iván González, Eneko Santos, Beñat Arruti, Alex Cenera)
-* **Asignatura:** Web Sistemak (2025-2026)
+Proiektu hau "Nor zara Ya?" jokoaren inplementazio bat da, non helburua futbol jokalari misteriotsu bat asmatzea den. Web Sistemen ikastaroko zeregin baten barruan garatu zen, batez ere front-end eta back-end teknologiak erabiliz.
