@@ -1,4 +1,7 @@
 import { stringToHTML, higher, lower } from './fragments.js';
+import { stats } from './fragments.js';
+import { updateStats } from './stats.js';
+import { getStats } from './stats.js';
 // YOUR CODE HERE :
 // .... stringToHTML ....
 // .... setupRows .....
@@ -134,9 +137,11 @@ export let setupRows = function (game) {
     resetInput();
     function success(){
         unblur('success');
+        showStats();
         }
     function gameOver(){
         unblur('failure');
+        showStats();
     }
     return /* addRow */ function (playerId) {
 
@@ -151,7 +156,7 @@ export let setupRows = function (game) {
         resetInput();
 
         if (gameEnded(playerId)) {
-            // updateStats(game.guesses.length);
+            updateStats(game.guesses.length);
 
             if (playerId == game.solution.id) {
                 success();
@@ -165,4 +170,36 @@ export let setupRows = function (game) {
 
         showContent(content, guess)
     }
+
+    function showStats() {
+        if (!document.getElementById('statsWindow')) {
+            document.body.insertAdjacentHTML('beforeend', stats);
+        }
+
+        const statsData = getStats('gameStats');
+
+        document.getElementById('totalTries').textContent = statsData.totalGames;
+        document.getElementById('successRate').textContent = statsData.successRate + '%';
+        document.getElementById('currentStreak').textContent = statsData.currentStreak;
+        document.getElementById('bestStreak').textContent = statsData.bestStreak;
+
+        document.getElementById('closeStats').onclick = () => {
+            document.getElementById('statsWindow').remove();
+        }
+
+        const countdownEl = document.getElementById('countdown');
+        function updateCountdown() {
+            let now = new Date();
+            let next = new Date();
+            next.setHours(24,0,0,0); // siguiente día a medianoche
+            let diff = Math.max(0, next - now);
+            let h = Math.floor(diff/3600000);
+            let m = Math.floor((diff%3600000)/60000);
+            let s = Math.floor((diff%60000)/1000);
+            countdownEl.textContent = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
 }

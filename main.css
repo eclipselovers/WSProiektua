@@ -2366,3 +2366,71 @@ footer p:last-child {
     position: relative !important;
   }
 }
+
+.stats-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #1f2937;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+    text-align: center;
+    z-index: 1000;
+    font-family: sans-serif;
+}
+
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stats-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.stat-item .stat-value {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.stat-item .stat-label {
+    display: block;
+    font-size: 0.9rem;
+    margin-top: 2px;
+}
+
+#showDistribution {
+    background-color: #3b82f6;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.next-player {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.credits {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #9ca3af;
+}

@@ -14,3 +14,40 @@ export const higher = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 2
 export const lower = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" aria-hidden="true" width="25" style="margin-right: -8px; margin-left: -3px;">
   <path fill-rule="evenodd" d="M14.707 12.293a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L9 14.586V3a1 1 0 0 1 2 0v11.586l2.293-2.293a1 1 0 0 1 1.414 0z" clip-rule="evenodd"></path>
 </svg>`;
+
+export const stats = `
+<div id="statsWindow" class="stats-container">
+  <div class="stats-header">
+    <h2>Statistics</h2>
+    <button id="closeStats">&times;</button>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-item">
+      <span class="stat-value" id="totalTries">0</span>
+      <span class="stat-label">Total tries</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value" id="successRate">0%</span>
+      <span class="stat-label">Success rate</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value" id="currentStreak">0</span>
+      <span class="stat-label">Current streak</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value" id="bestStreak">0</span>
+      <span class="stat-label">Best streak</span>
+    </div>
+  </div>
+  <button id="showDistribution">Show Guess Distribution</button>
+  <div id="nextPlayer" class="next-player">
+    <p>New footballer:</p>
+    <span id="countdown">00:00:00</span>
+  </div>
+  <div class="credits">
+    Web Sistemak<br>
+    2025/2026 ikasturteko praktika
+  </div>
+</div>
+`;
+
