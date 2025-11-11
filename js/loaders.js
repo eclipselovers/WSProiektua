@@ -1,5 +1,3 @@
-export { fetchJSON };
-
 async function fetchJSON(what) {
 
     // YOUR CODE HERE
@@ -12,3 +10,5 @@ async function fetchJSON(what) {
         });
 
 }
+
+module.exports = { fetchJSON };

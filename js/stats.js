@@ -1,7 +1,4 @@
-export {initState}
-export {successRate}
-export{getStats}
-export{updateStats}
+// Converted to CommonJS exports at bottom
 
 let initState = function(what, solutionId) {
     const key = String(what);
@@ -89,3 +86,5 @@ function updateStats(t) {
 
     return stats;
 }
+
+module.exports = { initState, successRate, getStats, updateStats };

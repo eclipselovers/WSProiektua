@@ -1,7 +1,7 @@
-import { folder, leftArrow, stringToHTML } from "./fragments.js";
-import { fetchJSON } from "./loaders.js";
-import { setupRows } from "./rows.js";
-import { autocomplete } from "./autocomplete.js";
+const { folder, leftArrow, stringToHTML } = require("./fragments.js");
+const { fetchJSON } = require("./loaders.js");
+const { setupRows } = require("./rows.js");
+const { autocomplete } = require("./autocomplete.js");
 
 function differenceInDays(date1) {
     // YOUR CODE HERE

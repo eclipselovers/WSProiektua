@@ -1,6 +1,5 @@
-import {setupRows} from "./rows.js";
-
-export {autocomplete}
+const { setupRows } = require("./rows.js");
+var match = require('./match.js');
 
 function autocomplete(inp, game) {
 
@@ -28,18 +27,21 @@ function autocomplete(inp, game) {
         this.parentNode.appendChild(a);
         /*for each item in the array...*/
         for (i = 0; i < players.length; i++) {
+            var matches = match(players[i].name.toUpperCase(), inp.value.toUpperCase());
             /*check if the item starts with the same letters as the text field value:*/
-            if ( players[i].name.toUpperCase().startsWith(inp.value.toUpperCase()) ) {
-
+            if ( matches.length > 0 ) {
+                console.log("Match found: " + players[i].name);
                 b = document.createElement("DIV");
                 b.classList.add('flex', 'items-start', 'gap-x-3', 'leading-tight', 'uppercase', 'text-sm');
                 b.innerHTML = `<img src="https://cdn.sportmonks.com/images/soccer/teams/${players[i].teamId % 32}/${players[i].teamId}.png"  width="28" height="28">`;
 
                 /*make the matching letters bold:*/
-                let hasiera = players[i].name.substr(0, val.length);
-                let bukaera = players[i].name.substr(val.length);
+                let highlighted = players[i].name;
+                matches.sort((a, b) => b[0] - a[0]).forEach(([start, end]) => {
+                  highlighted = highlighted.slice(0, start) + `<span class='font-bold'>${highlighted.slice(start, end)}</span>` + highlighted.slice(end);
+                });
                 b.innerHTML += `<div class='self-center'>
-                                    <span class='font-bold'>${hasiera}</span><span>${bukaera}</span>
+                                    ${highlighted}
                                     <input type='hidden' name='name' value='${players[i].name}'>
                                     <input type='hidden' name='id' value='${players[i].id}'>
                                 </div>`;
@@ -124,6 +126,8 @@ function autocomplete(inp, game) {
         closeAllLists(e.target);
     });
 }
+
+module.exports = { autocomplete };
 
 
 
