@@ -1,4 +1,4 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Bundle = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const { setupRows } = require("./rows.js");
 var match = require('./match.js');
 
@@ -31,7 +31,6 @@ function autocomplete(inp, game) {
             var matches = match(players[i].name.toUpperCase(), inp.value.toUpperCase());
             /*check if the item starts with the same letters as the text field value:*/
             if ( matches.length > 0 ) {
-                console.log("Match found: " + players[i].name);
                 b = document.createElement("DIV");
                 b.classList.add('flex', 'items-start', 'gap-x-3', 'leading-tight', 'uppercase', 'text-sm');
                 b.innerHTML = `<img src="https://cdn.sportmonks.com/images/soccer/teams/${players[i].teamId % 32}/${players[i].teamId}.png"  width="28" height="28">`;
@@ -212,6 +211,8 @@ const { fetchJSON } = require("./loaders.js");
 const { setupRows } = require("./rows.js");
 const { autocomplete } = require("./autocomplete.js");
 
+
+
 function differenceInDays(date1) {
     // YOUR CODE HERE
     const today = new Date();
@@ -229,6 +230,7 @@ let difference_In_Days = differenceInDays(new Date("2025-10-01"));
 window.onload = function () {
   document.getElementById("gamenumber").innerText = difference_In_Days.toString();
   document.getElementById("back-icon").innerHTML = folder + leftArrow;
+
 };
 
 let game = {
@@ -277,7 +279,26 @@ Promise.all([fetchJSON("../json/fullplayers25.json"), fetchJSON("../json/solutio
     document.getElementById("mistery").src = `https://playfootball.games/media/players/${game.solution.id % 32}/${game.solution.id}.png`;
 
       // YOUR CODE HERE
+      let state = JSON.parse(localStorage.getItem('WAYgameState'));
+      if(state){
+          const todayStr  = new Date().toISOString().slice(0,10);
+          const endedStr  = state.endedDate ? new Date(state.endedDate).toISOString().slice(0,10) : null;
+          const rows = setupRows(game);
+          if(state.ended && state.success && endedStr === todayStr){
+              state.guesses.forEach(e =>{  let guess = rows.getPlayer(e); let content = rows.setContent(guess); rows.showContent(content, guess)})
+              rows.success();
+          } else if(state.ended && !state.success && endedStr === todayStr ){
+              state.guesses.forEach(e =>{ let guess = rows.getPlayer(e);let content = rows.setContent(guess); rows.showContent(content, guess)})
+              rows.gameOver();
+          }else if (!state.ended){
+              state.guesses.forEach(e =>{  let guess = rows.getPlayer(e); let content = rows.setContent(guess); rows.showContent(content, guess)})
+          }
+          game.guesses = state.guesses
+      }
       autocomplete(document.getElementById("myInput"), game)
+
+
+
 
       //
   }
@@ -379,7 +400,7 @@ module.exports = function match(text, query, options) {
 };
 },{"remove-accents":8}],6:[function(require,module,exports){
 const { stringToHTML, higher, lower, stats } = require('./fragments.js');
-const { updateStats, getStats } = require('./stats.js');
+const { updateStats, getStats, initState } = require('./stats.js');
 // YOUR CODE HERE :
 // .... stringToHTML ....
 // .... setupRows .....
@@ -390,7 +411,7 @@ const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
 
 let setupRows = function (game) {
 
-    //let [state, updateState] = initState('WAYgameState', game.solution.id)
+    let [state, updateState] = initState('WAYgameState', game.solution.id)
 
     function leagueToFlag(leagueId) {
         const leagueMap = {
@@ -510,8 +531,18 @@ let setupRows = function (game) {
     }
     function gameEnded(lastGuess){
         // Game ends if guessed correctly or after 8 attempts
-        return lastGuess === game.solution.id || (game.guesses && game.guesses.length >= 8);
+        if(lastGuess === game.solution.id || (game.guesses && game.guesses.length >= 8) ){
+            let state2 = JSON.parse(localStorage.getItem('WAYgameState'));
+            state2.ended = true;
+            state2.endedDate = new Date().toISOString();
+            localStorage.setItem('WAYgameState', JSON.stringify(state2));
+            return true;
+        } else {
+            return false;
+        }
+
     }
+
     resetInput();
     function success(){
         unblur('success');
@@ -521,7 +552,8 @@ let setupRows = function (game) {
         unblur('failure');
         showStats();
     }
-    return /* addRow */ function (playerId) {
+
+    addRow = function (playerId) {
 
         let guess = getPlayer(playerId)
         console.log(guess)
@@ -529,7 +561,7 @@ let setupRows = function (game) {
         let content = setContent(guess)
 
         game.guesses.push(playerId)
-        //updateState(playerId)
+        updateState(playerId)
 
         resetInput();
 
@@ -537,6 +569,9 @@ let setupRows = function (game) {
             updateStats(game.guesses.length);
 
             if (playerId == game.solution.id) {
+                let state2 = JSON.parse(localStorage.getItem('WAYgameState'));
+                state2.succes = true;
+                localStorage.setItem('WAYgameState', JSON.stringify(state2));
                 success();
             }
 
@@ -579,11 +614,9 @@ let setupRows = function (game) {
         updateCountdown();
         setInterval(updateCountdown, 1000);
     }
-
+    return { addRow, success, gameOver, setContent, showContent, getPlayer };
 }
-
 module.exports = { setupRows };
-
 },{"./fragments.js":2,"./stats.js":7}],7:[function(require,module,exports){
 // Converted to CommonJS exports at bottom
 
@@ -602,7 +635,7 @@ let initState = function(what, solutionId) {
 
     // Initialize if missing or invalid
     if (!state || typeof state !== 'object') {
-        state = { guesses: [], solution: solutionId };
+        state = { guesses: [], solution: solutionId, ended: false,  endedDate: null, success: false };
         localStorage.setItem(key, JSON.stringify(state));
     } else {
         if (!Array.isArray(state.guesses)) state.guesses = [];
@@ -611,8 +644,11 @@ let initState = function(what, solutionId) {
     }
 
     const addGuess = function(guess) {
-        state.guesses.push(guess);
-        localStorage.setItem(key, JSON.stringify(state));
+        let actguesses = JSON.parse(localStorage.getItem(key)).guesses;
+       if(actguesses.length < 8){
+            state.guesses.push(guess);
+            localStorage.setItem(key, JSON.stringify(state));
+       }
     };
 
     return [state, addGuess];
@@ -1158,4 +1194,5 @@ module.exports = removeAccents;
 module.exports.has = hasAccents;
 module.exports.remove = removeAccents;
 
-},{}]},{},[4]);
+},{}]},{},[4])(4)
+});

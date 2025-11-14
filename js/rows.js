@@ -1,5 +1,5 @@
 const { stringToHTML, higher, lower, stats } = require('./fragments.js');
-const { updateStats, getStats } = require('./stats.js');
+const { updateStats, getStats, initState } = require('./stats.js');
 // YOUR CODE HERE :
 // .... stringToHTML ....
 // .... setupRows .....
@@ -10,7 +10,7 @@ const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
 
 let setupRows = function (game) {
 
-    //let [state, updateState] = initState('WAYgameState', game.solution.id)
+    let [state, updateState] = initState('WAYgameState', game.solution.id)
 
     function leagueToFlag(leagueId) {
         const leagueMap = {
@@ -130,8 +130,18 @@ let setupRows = function (game) {
     }
     function gameEnded(lastGuess){
         // Game ends if guessed correctly or after 8 attempts
-        return lastGuess === game.solution.id || (game.guesses && game.guesses.length >= 8);
+        if(lastGuess === game.solution.id || (game.guesses && game.guesses.length >= 8) ){
+            let state2 = JSON.parse(localStorage.getItem('WAYgameState'));
+            state2.ended = true;
+            state2.endedDate = new Date().toISOString();
+            localStorage.setItem('WAYgameState', JSON.stringify(state2));
+            return true;
+        } else {
+            return false;
+        }
+
     }
+
     resetInput();
     function success(){
         unblur('success');
@@ -141,7 +151,8 @@ let setupRows = function (game) {
         unblur('failure');
         showStats();
     }
-    return /* addRow */ function (playerId) {
+
+    addRow = function (playerId) {
 
         let guess = getPlayer(playerId)
         console.log(guess)
@@ -149,7 +160,7 @@ let setupRows = function (game) {
         let content = setContent(guess)
 
         game.guesses.push(playerId)
-        //updateState(playerId)
+        updateState(playerId)
 
         resetInput();
 
@@ -157,6 +168,9 @@ let setupRows = function (game) {
             updateStats(game.guesses.length);
 
             if (playerId == game.solution.id) {
+                let state2 = JSON.parse(localStorage.getItem('WAYgameState'));
+                state2.succes = true;
+                localStorage.setItem('WAYgameState', JSON.stringify(state2));
                 success();
             }
 
@@ -199,7 +213,6 @@ let setupRows = function (game) {
         updateCountdown();
         setInterval(updateCountdown, 1000);
     }
-
+    return { addRow, success, gameOver, setContent, showContent, getPlayer };
 }
-
 module.exports = { setupRows };

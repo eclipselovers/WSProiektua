@@ -30,7 +30,6 @@ function autocomplete(inp, game) {
             var matches = match(players[i].name.toUpperCase(), inp.value.toUpperCase());
             /*check if the item starts with the same letters as the text field value:*/
             if ( matches.length > 0 ) {
-                console.log("Match found: " + players[i].name);
                 b = document.createElement("DIV");
                 b.classList.add('flex', 'items-start', 'gap-x-3', 'leading-tight', 'uppercase', 'text-sm');
                 b.innerHTML = `<img src="https://cdn.sportmonks.com/images/soccer/teams/${players[i].teamId % 32}/${players[i].teamId}.png"  width="28" height="28">`;

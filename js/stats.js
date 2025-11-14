@@ -15,7 +15,7 @@ let initState = function(what, solutionId) {
 
     // Initialize if missing or invalid
     if (!state || typeof state !== 'object') {
-        state = { guesses: [], solution: solutionId };
+        state = { guesses: [], solution: solutionId, ended: false,  endedDate: null, success: false };
         localStorage.setItem(key, JSON.stringify(state));
     } else {
         if (!Array.isArray(state.guesses)) state.guesses = [];
@@ -24,8 +24,11 @@ let initState = function(what, solutionId) {
     }
 
     const addGuess = function(guess) {
-        state.guesses.push(guess);
-        localStorage.setItem(key, JSON.stringify(state));
+        let actguesses = JSON.parse(localStorage.getItem(key)).guesses;
+       if(actguesses.length < 8){
+            state.guesses.push(guess);
+            localStorage.setItem(key, JSON.stringify(state));
+       }
     };
 
     return [state, addGuess];
