@@ -133,7 +133,15 @@ export let setupRows = function (game) {
     }
     function gameEnded(lastGuess){
         // Game ends if guessed correctly or after 8 attempts
-        return lastGuess === game.solution.id || (game.guesses && game.guesses.length >= 8);
+        if(lastGuess === game.solution.id || (game.guesses && game.guesses.length >= 8)){
+            let state = JSON.parse(localStorage.getItem('WAYgameState'));
+            state.ended = true;
+            localStorage.setItem('WAYgameState', JSON.stringify(state));
+            return true;
+        } else {
+            return false;
+        }
+
     }
     resetInput();
     function success(){
@@ -160,6 +168,9 @@ export let setupRows = function (game) {
             updateStats(game.guesses.length);
 
             if (playerId == game.solution.id) {
+                let state = JSON.parse(localStorage.getItem('WAYgameState'));
+                state.succes = true;
+                localStorage.setItem('WAYgameState', JSON.stringify(state));
                 success();
             }
 
