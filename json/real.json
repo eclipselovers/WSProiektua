@@ -1,0 +1,274 @@
+{
+  "area": {
+    "id": 2224,
+    "name": "Spain",
+    "code": "ESP",
+    "flag": "https://crests.football-data.org/760.svg"
+  },
+  "id": 92,
+  "name": "Real Sociedad de Fútbol",
+  "shortName": "Real Sociedad",
+  "tla": "RSO",
+  "crest": "https://crests.football-data.org/92.png",
+  "address": "Anoeta Pasalekua, 1 San Sebastián 20014",
+  "website": "http://www.realsociedad.com",
+  "founded": 1903,
+  "clubColors": "Blue / White",
+  "venue": "Estadio Municipal de Anoeta",
+  "runningCompetitions": [
+    {
+      "id": 2014,
+      "name": "Primera Division",
+      "code": "PD",
+      "type": "LEAGUE",
+      "emblem": "https://crests.football-data.org/laliga.png"
+    },
+    {
+      "id": 2079,
+      "name": "Copa del Rey",
+      "code": "CDR",
+      "type": "CUP",
+      "emblem": null
+    }
+  ],
+  "coach": {
+    "id": 279928,
+    "firstName": "",
+    "lastName": "Sergio Francisco",
+    "name": "Sergio Francisco",
+    "dateOfBirth": "1979-03-19",
+    "nationality": "Spain",
+    "contract": {
+      "start": "2025-07",
+      "until": "2027-06"
+    }
+  },
+  "squad": [
+    {
+      "id": 32413,
+      "name": "Álex Remiro",
+      "position": "Goalkeeper",
+      "dateOfBirth": "1995-03-24",
+      "nationality": "Spain"
+    },
+    {
+      "id": 157040,
+      "name": "Unai Marrero",
+      "position": "Goalkeeper",
+      "dateOfBirth": "2001-10-09",
+      "nationality": "Spain"
+    },
+    {
+      "id": 215503,
+      "name": "Aitor Fraga",
+      "position": "Goalkeeper",
+      "dateOfBirth": "2003-03-09",
+      "nationality": "Spain"
+    },
+    {
+      "id": 283801,
+      "name": "Théo Folgado",
+      "position": "Goalkeeper",
+      "dateOfBirth": "2005-01-27",
+      "nationality": "France"
+    },
+    {
+      "id": 272954,
+      "name": "Luken Beitia",
+      "position": "Defence",
+      "dateOfBirth": "2004-06-30",
+      "nationality": "Spain"
+    },
+    {
+      "id": 272958,
+      "name": "Jon Balda",
+      "position": "Defence",
+      "dateOfBirth": "2002-04-20",
+      "nationality": "Spain"
+    },
+    {
+      "id": 263820,
+      "name": "Jon Gorrotxategi",
+      "position": "Midfield",
+      "dateOfBirth": "2002-02-02",
+      "nationality": "Spain"
+    },
+    {
+      "id": 279952,
+      "name": "Alex Lebarbier",
+      "position": "Midfield",
+      "dateOfBirth": "2004-08-23",
+      "nationality": "France"
+    },
+    {
+      "id": 182319,
+      "name": "Orri Oskarsson",
+      "position": "Offence",
+      "dateOfBirth": "2004-08-29",
+      "nationality": "Iceland"
+    },
+    {
+      "id": 272956,
+      "name": "Mikel Goti",
+      "position": "Offence",
+      "dateOfBirth": "2002-05-23",
+      "nationality": "Spain"
+    },
+    {
+      "id": 156615,
+      "name": "Beñat Turrientes",
+      "position": "Central Midfield",
+      "dateOfBirth": "2002-01-31",
+      "nationality": "Spain"
+    },
+    {
+      "id": 141571,
+      "name": "Jon Aramburu",
+      "position": "Right-Back",
+      "dateOfBirth": "2002-07-23",
+      "nationality": "Venezuela"
+    },
+    {
+      "id": 101182,
+      "name": "Ander Barrenetxea",
+      "position": "Left Winger",
+      "dateOfBirth": "2001-12-27",
+      "nationality": "Spain"
+    },
+    {
+      "id": 100129,
+      "name": "Aihen Muñoz",
+      "position": "Left-Back",
+      "dateOfBirth": "1997-08-16",
+      "nationality": "Spain"
+    },
+    {
+      "id": 82516,
+      "name": "Luka Sučić",
+      "position": "Central Midfield",
+      "dateOfBirth": "2002-09-08",
+      "nationality": "Croatia"
+    },
+    {
+      "id": 77734,
+      "name": "Yangel Herrera",
+      "position": "Central Midfield",
+      "dateOfBirth": "1998-01-07",
+      "nationality": "Venezuela"
+    },
+    {
+      "id": 48555,
+      "name": "Takefusa Kubo",
+      "position": "Right Winger",
+      "dateOfBirth": "2001-06-04",
+      "nationality": "Japan"
+    },
+    {
+      "id": 33615,
+      "name": "Brais Méndez",
+      "position": "Attacking Midfield",
+      "dateOfBirth": "1997-01-07",
+      "nationality": "Spain"
+    },
+    {
+      "id": 33148,
+      "name": "Carlos Soler",
+      "position": "Central Midfield",
+      "dateOfBirth": "1997-01-02",
+      "nationality": "Spain"
+    },
+    {
+      "id": 10206,
+      "name": "Duje Ćaleta-Car",
+      "position": "Centre-Back",
+      "dateOfBirth": "1996-09-17",
+      "nationality": "Croatia"
+    },
+    {
+      "id": 7672,
+      "name": "Umar Sadiq",
+      "position": "Centre-Forward",
+      "dateOfBirth": "1997-02-02",
+      "nationality": "Nigeria"
+    },
+    {
+      "id": 3259,
+      "name": "Gonçalo Guedes",
+      "position": "Left Winger",
+      "dateOfBirth": "1996-11-29",
+      "nationality": "Portugal"
+    },
+    {
+      "id": 164,
+      "name": "Sergio Gómez",
+      "position": "Right Winger",
+      "dateOfBirth": "2000-09-04",
+      "nationality": "Spain"
+    },
+    {
+      "id": 29,
+      "name": "Igor Zubeldía",
+      "position": "Centre-Back",
+      "dateOfBirth": "1997-03-30",
+      "nationality": "Spain"
+    },
+    {
+      "id": 27,
+      "name": "Aritz Elustondo",
+      "position": "Centre-Back",
+      "dateOfBirth": "1994-03-28",
+      "nationality": "Spain"
+    },
+    {
+      "id": 11,
+      "name": "Álvaro Odriozola",
+      "position": "Right-Back",
+      "dateOfBirth": "1995-12-14",
+      "nationality": "Spain"
+    },
+    {
+      "id": 245442,
+      "name": "Jon Martín",
+      "position": "Centre-Back",
+      "dateOfBirth": "2006-04-23",
+      "nationality": "Spain"
+    },
+    {
+      "id": 180137,
+      "name": "Mikel Oyarzabal",
+      "position": "Centre-Forward",
+      "dateOfBirth": "1997-04-21",
+      "nationality": "Spain"
+    },
+    {
+      "id": 176828,
+      "name": "Alberto Dadie",
+      "position": "Right Winger",
+      "dateOfBirth": "2002-07-20",
+      "nationality": "Spain"
+    },
+    {
+      "id": 172786,
+      "name": "Pablo Marin",
+      "position": "Attacking Midfield",
+      "dateOfBirth": "2003-07-03",
+      "nationality": "Spain"
+    },
+    {
+      "id": 171885,
+      "name": "Jon Karrikaburu",
+      "position": "Centre-Forward",
+      "dateOfBirth": "2002-09-19",
+      "nationality": "Spain"
+    },
+    {
+      "id": 170540,
+      "name": "Arsen Zakharyan",
+      "position": "Attacking Midfield",
+      "dateOfBirth": "2003-05-26",
+      "nationality": "Russia"
+    }
+  ],
+  "staff": [],
+  "lastUpdated": "2024-07-29T17:10:27Z"
+}
