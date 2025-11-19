@@ -205,6 +205,7 @@ let setupRows = function (game) {
         setInterval(updateCountdown, 1000);
     }
 
+
     function showGuessDistribution() {
         const statsData = getStats('gameStats');
         const dist = statsData.winDistribution;
@@ -236,6 +237,7 @@ let setupRows = function (game) {
             document.getElementById('distributionWindow').remove();
         };
     }
+
 
 }
 
