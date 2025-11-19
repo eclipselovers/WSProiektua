@@ -596,6 +596,11 @@ let setupRows = function (game) {
         document.getElementById('currentStreak').textContent = statsData.currentStreak;
         document.getElementById('bestStreak').textContent = statsData.bestStreak;
 
+        document.getElementById('showDistribution').onclick = () => {
+            showGuessDistribution();
+        };
+
+
         document.getElementById('closeStats').onclick = () => {
             document.getElementById('statsWindow').remove();
         }
@@ -604,7 +609,7 @@ let setupRows = function (game) {
         function updateCountdown() {
             let now = new Date();
             let next = new Date();
-            next.setHours(24,0,0,0); // siguiente día a medianoche
+            next.setHours(24,0,0,0);
             let diff = Math.max(0, next - now);
             let h = Math.floor(diff/3600000);
             let m = Math.floor((diff%3600000)/60000);
@@ -614,6 +619,39 @@ let setupRows = function (game) {
         updateCountdown();
         setInterval(updateCountdown, 1000);
     }
+
+	function showGuessDistribution() {
+        const statsData = getStats('gameStats');
+        const dist = statsData.winDistribution;
+
+        if (document.getElementById('distributionWindow')) return;
+
+        const html = `
+        <div id="distributionWindow" class="stats-container">
+        <div class="stats-header">
+            <h2>Guess Distribution</h2>
+            <button id="closeDistribution">&times;</button>
+        </div>
+
+        <div class="dist-bars">
+            ${dist.slice(0, 7).map((count, i) => `
+                <div class="dist-row">
+                <span class="dist-label">${i + 1}</span>
+                <div class="dist-bar" style="width:${10 + count * 20}px"></div>
+                <span class="dist-count">${count}</span>
+                </div>
+            `).join('')}
+        </div>
+        </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', html);
+
+        document.getElementById('closeDistribution').onclick = () => {
+            document.getElementById('distributionWindow').remove();
+        };
+    }
+	
     return { addRow, success, gameOver, setContent, showContent, getPlayer };
 }
 module.exports = { setupRows };
