@@ -1,3 +1,4 @@
+// js/rows.js
 const { stringToHTML, higher, lower, stats } = require('./fragments.js');
 const { updateStats, getStats, initState } = require('./stats.js');
 // YOUR CODE HERE :
@@ -5,12 +6,12 @@ const { updateStats, getStats, initState } = require('./stats.js');
 // .... setupRows .....
 
 const delay = 350;
-const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
+const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate', 'number']
 
 
 let setupRows = function (game) {
 
-    let [state, updateState] = initState('WAYgameState', game.solution.id)
+    const [, updateState] = initState('WAYgameState', game.solution.id)
 
     function leagueToFlag(leagueId) {
         const leagueMap = {
@@ -40,29 +41,56 @@ let setupRows = function (game) {
 
     let check = function (theKey, theValue) {
         if (theKey === "birthdate"){
-            if (getAge(theValue) === getAge(game.solution[theKey])){
-                return "correct"
-            } else if (getAge(theValue) < getAge(game.solution[theKey])){
-                return "higher"
+            const guessedAge = getAge(theValue);
+            const solutionAge = getAge(game.solution[theKey]);
+            if (guessedAge === solutionAge) {
+                return "correct";
+            } else if (guessedAge < solutionAge) {
+                return "higher";
             } else {
-                return "lower"
+                return "lower";
             }
-        } else {
-            if (game.solution[theKey] === theValue){
-                return "correct"
-            } else{
-                return "incorrect"
+        } else if (theKey === 'shirtNumber' || theKey === 'number') {
+            // Aceptar ambos nombres: 'shirtNumber' (internal) o 'number' (in player data)
+            // Obtener valor de solución (priorizar 'number' si existe)
+            const solRaw = (game.solution && (game.solution.number !== undefined ? game.solution.number : game.solution.shirtNumber)) ?? null;
+            if (solRaw === null) return 'incorrect';
+
+            // Intentar comparar numéricamente si ambos son numéricos
+            const guessedNum = Number(theValue);
+            const solNum = Number(solRaw);
+            if (Number.isFinite(guessedNum) && Number.isFinite(solNum)) {
+                if (guessedNum === solNum) return 'correct';
+                return guessedNum > solNum ? 'lower' : 'higher';
             }
 
+            // Fallback a comparación estricta de strings (no consideramos null/undefined iguales)
+            if (theValue === undefined || theValue === null || solRaw === undefined) return 'incorrect';
+            return String(theValue) === String(solRaw) ? 'correct' : 'incorrect';
+        } else {
+            // Comparaciones robustas para ids y strings: si ambos son numéricos comparar como números
+            const solVal = game.solution[theKey];
+            const guessVal = theValue;
+
+            if (solVal == null) return "incorrect";
+
+            const solNum = Number(solVal);
+            const guessNum = Number(guessVal);
+
+            if (Number.isFinite(solNum) && Number.isFinite(guessNum)) {
+                return solNum === guessNum ? "correct" : "incorrect";
+            }
+
+            return String(solVal) === String(guessVal) ? "correct" : "incorrect";
         }
     }
     function unblur(outcome) {
-        return new Promise( (resolve, reject) =>  {
+        return new Promise( (resolve) =>  {
             setTimeout(() => {
                 document.getElementById("mistery").classList.remove("hue-rotate-180", "blur")
                 document.getElementById("combobox").remove()
                 let color, text
-                if (outcome=='success'){
+                if (outcome==='success'){
                     color =  "bg-blue-500"
                     text = "Awesome"
                 } else {
@@ -83,12 +111,22 @@ let setupRows = function (game) {
         } else if (birthCheck === 'lower') {
             gezia = lower;
         }
+
+        const numberz = check('shirtNumber', guess.number);
+        let gezia2 = '';
+
+        if (numberz === 'higher') {
+            gezia2 = higher;
+        } else if (numberz === 'lower') {
+            gezia2 = lower;
+        }
         return [
             `<img src="https://playfootball.games/media/nations/${guess.nationality.toLowerCase()}.svg" alt="" style="width: 60%;">`,
             `<img src="https://playfootball.games/media/competitions/${leagueToFlag(guess.leagueId)}.png" alt="" style="width: 60%;">`,
             `<img src="https://cdn.sportmonks.com/images/soccer/teams/${guess.teamId % 32}/${guess.teamId}.png" alt="" style="width: 60%;">`,
             `${guess.position}`,
-            `${getAge(guess.birthdate)}${gezia}`
+            `${getAge(guess.birthdate)}${gezia}`,
+            `#${guess.number}${gezia2}`
         ]
     }
 
@@ -96,23 +134,39 @@ let setupRows = function (game) {
         let fragments = '', s = '';
         for (let j = 0; j < content.length; j++) {
             s = "".concat(((j + 1) * delay).toString(), "ms")
-            fragments += `<div class="w-1/5 shrink-0 flex justify-center ">
-                            <div class="mx-1 overflow-hidden w-full max-w-2 shadowed font-bold text-xl flex aspect-square rounded-full justify-center items-center bg-slate-400 text-white ${check(attribs[j], guess[attribs[j]]) == 'correct' ? 'bg-green-500' : ''} opacity-0 fadeInDown" style="max-width: 60px; animation-delay: ${s};">
+            // map attribute key for checking: if attrib is 'number' we compare with 'shirtNumber' in solution
+            const attrName = attribs[j];
+            const checkKey = attrName === 'number' ? 'shirtNumber' : attrName;
+            const valueForCheck = attrName === 'number' ? guess.number : guess[attrName];
+
+            fragments += `<div class="flex justify-center items-center shrink-0">
+                            <div class="mx-1 flex justify-center items-center rounded-full bg-slate-400 text-white ${check(checkKey, valueForCheck) === 'correct' ? 'bg-green-500' : ''} opacity-0 fadeInDown overflow-hidden font-bold text-[12px] leading-none shadowed"
+                                 style="width: 50px; height: 50px; min-width: 50px; max-width: 50px; animation-delay: ${s};">
                                 ${content[j]}
                             </div>
                          </div>`
         }
 
-        let child = `<div class="flex w-full flex-wrap text-l py-2">
-                        <div class=" w-full grow text-center pb-2">
-                            <div class="mx-1 overflow-hidden h-full flex items-center justify-center sm:text-right px-4 uppercase font-bold text-lg opacity-0 fadeInDown " style="animation-delay: 0ms;">
+        let child = `<div class="flex flex-col w-full py-2">
+
+                        <div class="w-full text-center pb-2">
+                            <div class="inline-block opacity-0 fadeInDown uppercase font-bold text-lg" style="animation-delay: 0ms;">
                                 ${guess.name}
                             </div>
                         </div>
-                        ${fragments}`
+
+                        <div class="flex justify-center items-center gap-2 w-full flex-wrap px-2">
+                            ${fragments}
+                        </div>
+
+                    </div>`
 
         let playersNode = document.getElementById('players')
-        playersNode.prepend(stringToHTML(child))
+        if (playersNode) {
+            // Forzar apilado vertical: añadir clases flex y flex-col si no existen
+            playersNode.classList.add('flex', 'flex-col');
+            playersNode.prepend(stringToHTML(child))
+        }
     }
     function resetInput(){
         // Clear input and update placeholder with current attempt number
@@ -123,10 +177,7 @@ let setupRows = function (game) {
         input.placeholder = `Guess ${attempt} of 8`;
     }
     let getPlayer = function (playerId) {
-        const foundPlayer = game.players.find(player => {
-            return player.id === playerId;
-        });
-        return foundPlayer;
+        return game.players.find(player => player.id === playerId);
     }
     function gameEnded(lastGuess){
         // Game ends if guessed correctly or after 8 attempts
@@ -146,7 +197,7 @@ let setupRows = function (game) {
     function success(){
         unblur('success');
         showStats();
-        }
+    }
     function gameOver(){
         unblur('failure');
         showStats();
@@ -174,7 +225,7 @@ let setupRows = function (game) {
                 success();
             }
 
-            if (game.guesses.length == 8) {
+            if (game.guesses.length === 8) {
                 gameOver();
             }
         }
